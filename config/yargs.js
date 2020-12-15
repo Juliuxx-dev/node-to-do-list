@@ -8,8 +8,15 @@ const options = {
 const updateOptions = {
   completed: {
     alias: 'c',
-    // default: true,
     desc: 'Mark as completed task'
+  }
+};
+
+const clearListOptions= {
+  confirm: {
+    demand: true,
+    alias: 'c',
+    desc: 'Type "true" to confirm deletion from to do task list'
   }
 };
 
@@ -18,6 +25,7 @@ const argv = require('yargs')
   .command('update', 'Update a to do task', { ...updateOptions, ...options })
   .command('delete', 'Delete a to do task', options)
   .command('list', 'Shows created tasks', updateOptions )
+  .command('clear-list', 'Delete the entire to do task list', clearListOptions)
   .help()
   .argv;
 

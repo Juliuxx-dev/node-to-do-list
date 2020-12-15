@@ -3,7 +3,7 @@ const toDo = require ('./to-do/to-do');
 var colors = require('colors/safe');
 
 let command = argv._[0];
-const { description, completed } = argv;
+const { description, completed, confirm } = argv;
 
 switch (command) {
   case 'create':
@@ -17,6 +17,9 @@ switch (command) {
     break;
   case 'delete':
     toDo.remove(description);
+    break;
+  case 'clear-list':
+    toDo.clearList(confirm);
     break;
 
   default:

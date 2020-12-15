@@ -4,12 +4,12 @@ const filters = require('../filters/filters')
 
 let toDoList = [];
 
-const isTypeString = (status) => {
-  return typeof status === 'string';
+const isTypeString = (value) => {
+  return typeof value === 'string';
 }
 
-const formatStatus = (completed) => {
-  return completed.toLowerCase() === 'true' ? true : false;
+const formatBoolean = (value) => {
+  return value.toLowerCase() === 'true' ? true : false;
 }
 
 const loadDB = (data = null) => {
@@ -20,7 +20,6 @@ const loadDB = (data = null) => {
       toDoList = require('../db/data.json');
     }
   } catch (error) {
-    console.log('error:', error);
     toDoList = [];
   }
 }
@@ -64,7 +63,7 @@ const getList = (completed = null, data = null) => {
   loadDB(data);
 
   if (isTypeString(completed)) {
-    completed = formatStatus(completed);
+    completed = formatBoolean(completed);
     toDoList = toDoList.filter(task => task.completed === completed);
   }
 
@@ -89,7 +88,7 @@ const update = (description, completed = true) => {
 
   if ( index >= 0) {
     if (isTypeString(completed)) {
-      completed = formatStatus(completed);
+      completed = formatBoolean(completed);
     }
 
     toDoList[index].completed = completed;
@@ -115,12 +114,25 @@ const remove = (description) => {
   } else {
     console.log(colors.red("There are no matching tasks"));
   }
+}
 
+const clearList = (confirm) => {  
+  if (isTypeString(confirm)) {
+    confirm = formatBoolean(confirm);
+    if (confirm) {
+      toDoList = [];
+
+      saveDB(() => {
+        getList();
+      });
+    }
+  }
 }
 
 module.exports = {
   create,
   getList,
   update,
-  remove
+  remove,
+  clearList
 }
